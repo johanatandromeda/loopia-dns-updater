@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"strings"
 )
 
 func GetGlobalIpv4Address(ifName string) (string, error) {
@@ -15,16 +16,21 @@ func GetGlobalIpv4Address(ifName string) (string, error) {
 
 	for _, i := range ifaces {
 		log.Printf("Found interface %s", i.Name)
-		addrs, err := i.Addrs()
-		if err != nil {
-			return "", err
-		}
-		for _, addr := range addrs {
-			ip, _, err := net.ParseCIDR(addr.String())
+		if i.Name == ifName {
+			addrs, err := i.Addrs()
 			if err != nil {
 				return "", err
 			}
-			log.Printf("Found address %s", ip)
+			for _, addr := range addrs {
+				ip, _, err := net.ParseCIDR(addr.String())
+				if err != nil {
+					return "", err
+				}
+				log.Printf("Found address %s", ip)
+				if ip.IsGlobalUnicast() && !ip.IsPrivate() && strings.Contains(ip.String(), ":") {
+					return ip.String(), nil
+				}
+			}
 		}
 	}
 
