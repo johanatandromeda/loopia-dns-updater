@@ -6,4 +6,5 @@ echo Buildning V$GIT_TAG
 
 FLAGS=""
 OUTPUT="loopia-ipv6-updater"
-env GOOS=linux GOARCH=amd64 go build -o $OUTPUT $FLAGS -ldflags "-X main.version=$GIT_TAG" cmd/main/*.go
+env GOOS=linux GOARCH=amd64 go build -o linux/$OUTPUT $FLAGS -ldflags "-X main.version=$GIT_TAG" cmd/main/*.go
+env GOOS=openbsd GOARCH=amd64 go build -o openbsd/$OUTPUT $FLAGS -ldflags "-X main.version=$GIT_TAG" cmd/main/*.go
