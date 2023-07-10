@@ -8,3 +8,4 @@ FLAGS=""
 OUTPUT="loopia-ipv6-updater"
 env GOOS=linux GOARCH=amd64 go build -o linux/$OUTPUT $FLAGS -ldflags "-X main.version=$GIT_TAG" cmd/main/*.go
 env GOOS=openbsd GOARCH=amd64 go build -o openbsd/$OUTPUT $FLAGS -ldflags "-X main.version=$GIT_TAG" cmd/main/*.go
+env GOOS=freebsd GOARCH=amd64 go build -o freebsd/$OUTPUT $FLAGS -ldflags "-X main.version=$GIT_TAG" cmd/main/*.go

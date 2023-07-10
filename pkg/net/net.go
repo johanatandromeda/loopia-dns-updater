@@ -1,6 +1,7 @@
 package net
 
 import (
+	"fmt"
 	"log"
 	"net"
 )
@@ -23,5 +24,5 @@ func GetGlobalIpv4Address(ifName string) (string, error) {
 		}
 	}
 
-	return "", nil
+	return "", fmt.Errorf("No global IPv6 address found for interface %s", ifName)
 }
