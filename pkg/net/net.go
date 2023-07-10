@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func GetGlobalIpv4Address(ifName string) (string, error) {
+func GetGlobalIpv6Address(ifName string) (string, error) {
 
 	ifaces, err := net.Interfaces()
 	if err != nil {

@@ -32,7 +32,7 @@ func main() {
 	}
 
 	ifName := config.IfName
-	ipv4, err := net.GetGlobalIpv4Address(ifName)
+	ipv4, err := net.GetGlobalIpv6Address(ifName)
 	if err != nil {
 		log.Fatal(err)
 	}
