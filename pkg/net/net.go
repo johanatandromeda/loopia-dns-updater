@@ -20,7 +20,11 @@ func GetGlobalIpv4Address(ifName string) (string, error) {
 			return "", err
 		}
 		for _, addr := range addrs {
-			log.Printf("Found address %s", addr.String())
+			ip, _, err := net.ParseCIDR(addr.String())
+			if err != nil {
+				return "", err
+			}
+			log.Printf("Found address %s", ip)
 		}
 	}
 

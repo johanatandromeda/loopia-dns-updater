@@ -2,3 +2,4 @@
 linux/*
 openbsd/*
 freebsd/*
+sample-config.yaml
