@@ -6,10 +6,16 @@ import (
 )
 
 type Config struct {
-	IfName string `yaml:"ifName"`
+	Domain []struct {
+		Name       string `yaml:"name"`
+		Interfaces []struct {
+			IfName string `yaml:"ifName"`
+			Prefix int    `yaml:"prefix"`
+		} `yaml:"interfaces"`
+	} `yaml:"domain"`
 	Loopia struct {
-		Username string `yaml:"user"`
-		Password string `yaml:"pass"`
+		Username string `yaml:"username"`
+		Password string `yaml:"password"`
 	} `yaml:"loopia"`
 }
 

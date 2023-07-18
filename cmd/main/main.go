@@ -2,6 +2,7 @@ package main
 
 import (
 	"andromeda.nu/loopia-ipv6-updater/pkg/config"
+	"andromeda.nu/loopia-ipv6-updater/pkg/dns"
 	"andromeda.nu/loopia-ipv6-updater/pkg/net"
 	"flag"
 	"fmt"
@@ -31,11 +32,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ifName := config.IfName
+	ifName := config.Domain[0].Interfaces[0].IfName
 	ipv4, err := net.GetGlobalIpv6Address(ifName)
 	if err != nil {
 		log.Fatal(err)
 	}
 	fmt.Printf("Found global IPv6 %s for interface %s\n", ipv4, ifName)
 
+	dns.FindRecords(config)
 }
