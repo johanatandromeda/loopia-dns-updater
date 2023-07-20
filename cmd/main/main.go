@@ -32,12 +32,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ifName := config.Domain[0].Interfaces[0].IfName
-	ipv4, err := net.GetGlobalIpv6Address(ifName)
+	addresses, err := net.GetGlobalAddresses(config)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Found global IPv6 %s for interface %s\n", ipv4, ifName)
 
-	dns.FindRecords(config)
+	dns.FindRecords(config, addresses)
 }

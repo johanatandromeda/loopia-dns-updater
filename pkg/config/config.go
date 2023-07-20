@@ -9,8 +9,11 @@ type Config struct {
 	Domain []struct {
 		Name       string `yaml:"name"`
 		Interfaces []struct {
-			IfName string `yaml:"ifName"`
-			Prefix int    `yaml:"prefix"`
+			IfName        string   `yaml:"ifName"`
+			MatchUnknown4 bool     `yaml:"matchUnknown4"`
+			MatchUnknown6 bool     `yaml:"matchUnknown6"`
+			Match4        []string `yaml:"match4"`
+			Match6        []string `yaml:"match6"`
 		} `yaml:"interfaces"`
 	} `yaml:"domain"`
 	Loopia struct {
