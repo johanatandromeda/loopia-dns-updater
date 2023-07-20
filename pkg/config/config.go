@@ -2,6 +2,7 @@ package config
 
 import (
 	"gopkg.in/yaml.v2"
+	"log"
 	"os"
 )
 
@@ -35,5 +36,27 @@ func ReadConfig(fileName string) (Config, error) {
 	if err != nil {
 		return cfg, err
 	}
+	cfg.SanityCheck()
 	return cfg, nil
+}
+
+func (c *Config) SanityCheck() {
+	for _, domain := range c.Domain {
+		foundMatchUnknown4 := false
+		foundMatchUnknown6 := false
+		for _, iface := range domain.Interfaces {
+			if iface.MatchUnknown4 {
+				if foundMatchUnknown4 {
+					log.Fatal("Duplicate matchUnknown4 in domain %s", domain.Name)
+				}
+				foundMatchUnknown4 = true
+			}
+			if iface.MatchUnknown6 {
+				if foundMatchUnknown6 {
+					log.Fatal("Duplicate matchUnknown6 in domain %s", domain.Name)
+				}
+				foundMatchUnknown6 = true
+			}
+		}
+	}
 }
