@@ -3,7 +3,7 @@ package net
 import (
 	"andromeda.nu/loopia-ipv6-updater/pkg/config"
 	"fmt"
-	"log"
+	"golang.org/x/exp/slog"
 	"net"
 	"strings"
 )
@@ -31,7 +31,7 @@ func GetGlobalAddresses(config config.Config) (map[string]Address, error) {
 	addresses := make(map[string]Address)
 
 	for _, i := range ifaces {
-		log.Printf("Found interface %s", i.Name)
+		slog.Debug("Found interface " + i.Name)
 		if _, ok := ifInConf[i.Name]; ok {
 			addrs, err := i.Addrs()
 			if err != nil {
@@ -42,15 +42,15 @@ func GetGlobalAddresses(config config.Config) (map[string]Address, error) {
 				if err != nil {
 					return nil, err
 				}
-				log.Printf("Found address %s", ip)
+				slog.Debug(fmt.Sprintf("Found address %s", ip))
 				if ip.IsGlobalUnicast() && !ip.IsPrivate() {
 					if strings.Contains(ip.String(), ":") {
-						log.Printf("Adding global IPv6 address %s for %s", addr, i.Name)
+						slog.Debug(fmt.Sprintf("Adding global IPv6 address %s for %s", addr, i.Name))
 						a := getAddressEntry(i.Name, addresses)
 						a.ipv6 = &addr
 						addresses[i.Name] = a
 					} else if strings.Contains(ip.String(), ".") {
-						log.Printf("Adding global IPv4 address %s for %s", addr, i.Name)
+						slog.Debug(fmt.Sprintf("Adding global IPv4 address %s for %s", addr, i.Name))
 						a := getAddressEntry(i.Name, addresses)
 						a.ipv4 = &addr
 						addresses[i.Name] = a

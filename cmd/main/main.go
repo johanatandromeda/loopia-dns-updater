@@ -6,6 +6,7 @@ import (
 	"andromeda.nu/loopia-ipv6-updater/pkg/net"
 	"flag"
 	"fmt"
+	"golang.org/x/exp/slog"
 	"log"
 	"os"
 )
@@ -13,10 +14,17 @@ import (
 var version = ""
 
 func main() {
+
+	var programLevel = new(slog.LevelVar) // Info by default
+	h := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: programLevel})
+	slog.SetDefault(slog.New(h))
+
 	fmt.Printf("Starting loopia-ipv6-updater V %s\n", version)
 
 	configFile := flag.String("c", "/etc/loopia-ipv6-updater.yaml", "Config file")
 	help := flag.Bool("h", false, "Show help")
+	debug := flag.Bool("d", false, "Debug")
+	quiet := flag.Bool("q", false, "Quiet")
 
 	flag.Parse()
 
@@ -25,7 +33,15 @@ func main() {
 		os.Exit(0)
 	}
 
-	log.Printf("Using config file %s", *configFile)
+	if *debug {
+		programLevel.Set(slog.LevelDebug)
+	}
+
+	if *quiet {
+		programLevel.Set(slog.LevelWarn)
+	}
+
+	slog.Info("Using config file " + *configFile)
 
 	config, err := config.ReadConfig(*configFile)
 	if err != nil {
