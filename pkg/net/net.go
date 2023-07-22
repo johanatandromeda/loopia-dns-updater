@@ -9,8 +9,8 @@ import (
 )
 
 type Address struct {
-	ipv4 *net.Addr
-	ipv6 *net.Addr
+	Ipv4 net.Addr
+	Ipv6 net.Addr
 }
 
 func GetGlobalAddresses(config config.Config) (map[string]Address, error) {
@@ -47,12 +47,12 @@ func GetGlobalAddresses(config config.Config) (map[string]Address, error) {
 					if strings.Contains(ip.String(), ":") {
 						slog.Debug(fmt.Sprintf("Adding global IPv6 address %s for %s", addr, i.Name))
 						a := getAddressEntry(i.Name, addresses)
-						a.ipv6 = &addr
+						a.Ipv6 = addr
 						addresses[i.Name] = a
 					} else if strings.Contains(ip.String(), ".") {
 						slog.Debug(fmt.Sprintf("Adding global IPv4 address %s for %s", addr, i.Name))
 						a := getAddressEntry(i.Name, addresses)
-						a.ipv4 = &addr
+						a.Ipv4 = addr
 						addresses[i.Name] = a
 					}
 				}
@@ -62,7 +62,7 @@ func GetGlobalAddresses(config config.Config) (map[string]Address, error) {
 
 	// Sanity check
 	for ifName, addr := range addresses {
-		if addr.ipv6 == nil && addr.ipv4 == nil {
+		if addr.Ipv6 == nil && addr.Ipv4 == nil {
 			return nil, fmt.Errorf("No global IPv4 or IPv6 address found for interface %s", ifName)
 		}
 	}

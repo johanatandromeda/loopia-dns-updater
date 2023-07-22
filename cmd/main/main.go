@@ -53,5 +53,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	dns.FindRecords(config, addresses)
+	dns.UpdateRecords(config, addresses)
 }
