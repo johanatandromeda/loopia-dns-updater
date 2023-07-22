@@ -25,6 +25,7 @@ func main() {
 	help := flag.Bool("h", false, "Show help")
 	debug := flag.Bool("d", false, "Debug")
 	quiet := flag.Bool("q", false, "Quiet")
+	dry := flag.Bool("n", false, "Dry run")
 
 	flag.Parse()
 
@@ -53,5 +54,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	dns.UpdateRecords(config, addresses)
+	dns.UpdateRecords(config, addresses, *dry)
 }

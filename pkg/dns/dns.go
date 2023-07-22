@@ -10,7 +10,7 @@ import (
 	gonet "net"
 )
 
-func UpdateRecords(conf config.Config, addresses map[string]net.Address) {
+func UpdateRecords(conf config.Config, addresses map[string]net.Address, bry bool) {
 	client, err := loopia.New(conf.Loopia.Username, conf.Loopia.Password)
 	if err != nil {
 		log.Fatal(err)
