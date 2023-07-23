@@ -8,8 +8,8 @@ AAAA records.
 
 1. Must work with lots of hosts/records behind SLAAC
 2. Rely on the IP of the interface rather than use an
-   external service to fins the IP
-3. Auto discover of records in need to be updater
+   external service to finds the IP
+3. Auto discover of records in need to be updated
    (idea from one of my brothers)
 4. Should work with both IPv4 and IPv6.
 5. The use case is home use and small office use with a single FW/Router.
@@ -30,8 +30,8 @@ to run periodically
 | c {file} | Config file location. If not set, /etc/loopia-dns-updater.yaml is used |
 | d        | Debug output                                                           |
 | h        | Show help                                                              |
-| n        | Dry run.                                                               |
-| q        | Quiet. Minimal logging.                                                |
+| n        | Dry run                                                                |
+| q        | Quiet. Minimal logging                                                 |
 
 ## Logging
 
@@ -45,8 +45,8 @@ the complete IP of the interface is updated in the DNS.
 ## IPv6 handling
 
 The IPv6 handling supports SLAAC. This is done by reading the netmask of
-the interface. The prefix (most often the upper 64 bits) are replaced
-of the AAAA record. The lower part (most often the lower 64 bits) is kept
+the interface. The prefix (most often the upper 64 bits) is replaced
+in the AAAA record. The lower part (most often the lower 64 bits) is kept
 as is. This method also works for /128 addresses where the full address
 is replaced as with IPv4.
 

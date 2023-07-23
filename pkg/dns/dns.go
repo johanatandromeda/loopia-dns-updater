@@ -10,12 +10,13 @@ import (
 	gonet "net"
 )
 
-func UpdateRecords(conf config.Config, addresses map[string]net.Address, bry bool) {
+func UpdateRecords(conf config.Config, addresses map[string]net.Address, dry bool) {
 	client, err := loopia.New(conf.Loopia.Username, conf.Loopia.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for _, domain := range conf.Domains {
+		slog.Debug(fmt.Sprintf("Processing domain %s", domain.Name))
 		aByName := make(map[string]loopia.Record)
 		aaaaByName := make(map[string]loopia.Record)
 		ifByFqdn4 := make(map[string]string)
@@ -59,17 +60,18 @@ func UpdateRecords(conf config.Config, addresses map[string]net.Address, bry boo
 			for _, record := range records {
 				if record.Type == "A" {
 					slog.Debug(fmt.Sprintf("Found A record %s = %s", fqdn, record.Value))
-					aByName[fqdn] = record
+					aByName[subdomain.Name] = record
 				}
 				if record.Type == "AAAA" {
 					slog.Debug(fmt.Sprintf("Found AAAA record %s = %s", fqdn, record.Value))
-					aaaaByName[fqdn] = record
+					aaaaByName[subdomain.Name] = record
 				}
 			}
 		}
 
 		// Update the records
-		for fqdn, record := range aByName {
+		for subdomain, record := range aByName {
+			fqdn := subdomain + "." + domain.Name
 			if ifName, ok := ifByFqdn4[fqdn]; ok {
 				addr, ok := addresses[ifName]
 				if !ok || addr.Ipv4 == nil {
@@ -79,16 +81,19 @@ func UpdateRecords(conf config.Config, addresses map[string]net.Address, bry boo
 				if err != nil {
 					log.Fatal(err)
 				}
-				slog.Debug(fmt.Sprintf("Checking whether match known IPv4 %s is set for %s (current value %s)", ifIp, fqdn, record.Value))
+				slog.Debug(fmt.Sprintf("Checking whether match known IPv4 %s is set for %s (current value %s)", ifIp, subdomain, record.Value))
+				updateIfNeeded(client, ifIp.String(), record, domain.Name, subdomain, dry)
 			} else if matchUnknown4 != nil {
 				ifIp, _, err := gonet.ParseCIDR(matchUnknown4.String())
 				if err != nil {
 					log.Fatal(err)
 				}
-				slog.Debug(fmt.Sprintf("Checking whether match unknown IPv4 %s is set for %s (current value %s)", ifIp, fqdn, record.Value))
+				slog.Debug(fmt.Sprintf("Checking whether match unknown IPv4 %s is set for %s (current value %s)", ifIp, subdomain, record.Value))
+				updateIfNeeded(client, ifIp.String(), record, domain.Name, subdomain, dry)
 			}
 		}
-		for fqdn, record := range aaaaByName {
+		for subdomain, record := range aaaaByName {
+			fqdn := subdomain + "." + domain.Name
 			if ifName, ok := ifByFqdn6[fqdn]; ok {
 				addr, ok := addresses[ifName]
 				if !ok || addr.Ipv6 == nil {
@@ -98,13 +103,15 @@ func UpdateRecords(conf config.Config, addresses map[string]net.Address, bry boo
 				if err != nil {
 					log.Fatal(err)
 				}
-				slog.Debug(fmt.Sprintf("Checking whether match known IPv6 %s is set for %s (current value %s)", newIp, fqdn, record.Value))
+				slog.Debug(fmt.Sprintf("Checking whether match known IPv6 %s is set for %s (current value %s)", newIp, subdomain, record.Value))
+				updateIfNeeded(client, newIp, record, domain.Name, subdomain, dry)
 			} else if matchUnknown6 != nil {
 				newIp, err := applyNet(record.Value, matchUnknown6)
 				if err != nil {
 					log.Fatal(err)
 				}
-				slog.Debug(fmt.Sprintf("Checking whether match unknown IPv6 %s is set for %s (current value %s)", newIp, fqdn, record.Value))
+				slog.Debug(fmt.Sprintf("Checking whether match unknown IPv6 %s is set for %s (current value %s)", newIp, subdomain, record.Value))
+				updateIfNeeded(client, newIp, record, domain.Name, subdomain, dry)
 			}
 		}
 	}
@@ -128,4 +135,18 @@ func applyNet(addr string, ifAddr gonet.Addr) (string, error) {
 	}
 	newIp := gonet.IP(ipWithNewNet)
 	return newIp.String(), nil
+}
+
+func updateIfNeeded(client *loopia.API, newIp string, record loopia.Record, domain string, subdomain string, dry bool) {
+	fqdn := subdomain + "." + domain
+	if newIp != record.Value {
+		if dry {
+			slog.Info(fmt.Sprintf("Dry run: Would update %s to %s for %s of type %s", record.Value, newIp, fqdn, record.Type))
+		} else {
+			record.Value = newIp
+			//client.UpdateZoneRecord(domain, subdomain, record)
+		}
+	} else {
+		slog.Debug("No update required")
+	}
 }
