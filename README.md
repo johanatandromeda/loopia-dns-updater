@@ -78,15 +78,15 @@ loopia:
 
 Configuration items:
 
-| Item                             | Description                                                                                              |
-|----------------------------------|----------------------------------------------------------------------------------------------------------|
-| domains                          | List of domains to update                                                                                |
-| domains.name                     | FQDN of the domain                                                                                       |
-| domains.interfaces               | List of interfaces where to find IP for the domain                                                       |
-| domains.interfaces.ifName        | The interface name                                                                                       |
-| domains.interfaces.match4        | List of FQDN that should be assigned the IPv4 of the interface                                           |
-| domains.interfaces.match6        | List of FQDN that should be assigned the IPv6 of the interface                                           |
-| domains.interfaces.matchUnknown4 | Updated A records that are not listed in any {this}.interfaces.match4 with the IPv4 of this interface    |
-| domains.interfaces.matchUnknown6 | Updated AAAA records that are not listed in any {this}.interfaces.match6 with the IPv6 of this interface |
-| loopia.username                  | Loopia API user                                                                                          |
-| loopia.password                  | Loopia API password                                                                                      |
+| Item                             | Description                                                                                             |
+|----------------------------------|---------------------------------------------------------------------------------------------------------|
+| domains                          | List of domains to update                                                                               |
+| domains.name                     | FQDN of the domain                                                                                      |
+| domains.interfaces               | List of interfaces where to find IP for the domain                                                      |
+| domains.interfaces.ifName        | The interface name                                                                                      |
+| domains.interfaces.match4        | List of FQDN that should be assigned the IPv4 of the interface                                          |
+| domains.interfaces.match6        | List of FQDN that should be assigned the IPv6 of the interface                                          |
+| domains.interfaces.matchUnknown4 | Update A records that are not listed in any {this}.interfaces.match4 with the IPv4 of this interface    |
+| domains.interfaces.matchUnknown6 | Update AAAA records that are not listed in any {this}.interfaces.match6 with the IPv6 of this interface |
+| loopia.username                  | Loopia API user                                                                                         |
+| loopia.password                  | Loopia API password                                                                                     |
