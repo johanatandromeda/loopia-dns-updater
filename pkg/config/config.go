@@ -7,7 +7,7 @@ import (
 )
 
 type Config struct {
-	Domain []struct {
+	Domains []struct {
 		Name       string `yaml:"name"`
 		Interfaces []struct {
 			IfName        string   `yaml:"ifName"`
@@ -16,7 +16,7 @@ type Config struct {
 			Match4        []string `yaml:"match4"`
 			Match6        []string `yaml:"match6"`
 		} `yaml:"interfaces"`
-	} `yaml:"domain"`
+	} `yaml:"domains"`
 	Loopia struct {
 		Username string `yaml:"username"`
 		Password string `yaml:"password"`
@@ -41,7 +41,7 @@ func ReadConfig(fileName string) (Config, error) {
 }
 
 func (c *Config) SanityCheck() {
-	for _, domain := range c.Domain {
+	for _, domain := range c.Domains {
 		foundMatchUnknown4 := false
 		foundMatchUnknown6 := false
 		for _, iface := range domain.Interfaces {

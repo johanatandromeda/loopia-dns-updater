@@ -21,7 +21,7 @@ func main() {
 
 	fmt.Printf("Starting loopia-ipv6-updater V %s\n", version)
 
-	configFile := flag.String("c", "/etc/loopia-ipv6-updater.yaml", "Config file")
+	configFile := flag.String("c", "/etc/loopia-dns-updater.yaml", "Config file")
 	help := flag.Bool("h", false, "Show help")
 	debug := flag.Bool("d", false, "Debug")
 	quiet := flag.Bool("q", false, "Quiet")

@@ -22,7 +22,7 @@ func GetGlobalAddresses(config config.Config) (map[string]Address, error) {
 
 	ifInConf := map[string]struct{}{}
 
-	for _, domain := range config.Domain {
+	for _, domain := range config.Domains {
 		for _, iface := range domain.Interfaces {
 			ifInConf[iface.IfName] = struct{}{}
 		}

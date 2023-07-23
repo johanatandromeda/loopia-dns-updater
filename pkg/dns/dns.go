@@ -15,7 +15,7 @@ func UpdateRecords(conf config.Config, addresses map[string]net.Address, bry boo
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, domain := range conf.Domain {
+	for _, domain := range conf.Domains {
 		aByName := make(map[string]loopia.Record)
 		aaaaByName := make(map[string]loopia.Record)
 		ifByFqdn4 := make(map[string]string)
