@@ -16,7 +16,6 @@ func UpdateRecords(conf config.Config, addresses map[string]net.Address, dry boo
 		log.Fatal(err)
 	}
 	for _, domain := range conf.Domains {
-		slog.Debug(fmt.Sprintf("Processing domain %s", domain.Name))
 		aByName := make(map[string]loopia.Record)
 		aaaaByName := make(map[string]loopia.Record)
 		ifByFqdn4 := make(map[string]string)
@@ -143,8 +142,12 @@ func updateIfNeeded(client *loopia.API, newIp string, record loopia.Record, doma
 		if dry {
 			slog.Info(fmt.Sprintf("Dry run: Would update %s to %s for %s of type %s", record.Value, newIp, fqdn, record.Type))
 		} else {
+			slog.Info(fmt.Sprintf("Updating %s to %s for %s of type %s", record.Value, newIp, fqdn, record.Type))
 			record.Value = newIp
-			//client.UpdateZoneRecord(domain, subdomain, record)
+			status, err := client.UpdateZoneRecord(domain, subdomain, record)
+			if err != nil {
+				slog.Error(fmt.Sprintf("Update failed for %s of type %s due to %s", fqdn, record.Type, status.Cause))
+			}
 		}
 	} else {
 		slog.Debug("No update required")
