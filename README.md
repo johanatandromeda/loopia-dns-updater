@@ -29,13 +29,13 @@ possible to compile for other operating systems and CPU architectures.
 The software runs as a single execution. Place it in cron or something similar
 to run periodically
 
-| Flag     | Description                                                            |
-|----------|------------------------------------------------------------------------|
-| c {file} | Config file location. If not set, /etc/loopia-dns-updater.yaml is used |
-| d        | Debug output                                                           |
-| h        | Show help                                                              |
-| n        | Dry run                                                                |
-| q        | Quiet. Minimal logging                                                 |
+| Flag      | Description                                                            |
+|-----------|------------------------------------------------------------------------|
+| -c {file} | Config file location. If not set, /etc/loopia-dns-updater.yaml is used |
+| -d        | Debug output                                                           |
+| -h        | Show help                                                              |
+| -n        | Dry run                                                                |
+| -q        | Quiet. Minimal logging                                                 |
 
 ## Logging
 
