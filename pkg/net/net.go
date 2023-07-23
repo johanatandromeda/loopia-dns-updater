@@ -1,8 +1,8 @@
 package net
 
 import (
-	"andromeda.nu/loopia-ipv6-updater/pkg/config"
 	"fmt"
+	"github.com/johanatandromeda/loopia-dns-updater/pkg/config"
 	"golang.org/x/exp/slog"
 	"net"
 	"strings"

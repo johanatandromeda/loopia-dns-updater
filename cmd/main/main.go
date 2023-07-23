@@ -1,11 +1,11 @@
 package main
 
 import (
-	"andromeda.nu/loopia-ipv6-updater/pkg/config"
-	"andromeda.nu/loopia-ipv6-updater/pkg/dns"
-	"andromeda.nu/loopia-ipv6-updater/pkg/net"
 	"flag"
 	"fmt"
+	"github.com/johanatandromeda/loopia-dns-updater/pkg/config"
+	"github.com/johanatandromeda/loopia-dns-updater/pkg/dns"
+	"github.com/johanatandromeda/loopia-dns-updater/pkg/net"
 	"golang.org/x/exp/slog"
 	"log"
 	"os"

@@ -1,9 +1,9 @@
 package dns
 
 import (
-	"andromeda.nu/loopia-ipv6-updater/pkg/config"
-	"andromeda.nu/loopia-ipv6-updater/pkg/net"
 	"fmt"
+	"github.com/johanatandromeda/loopia-dns-updater/pkg/config"
+	"github.com/johanatandromeda/loopia-dns-updater/pkg/net"
 	"github.com/jonlil/loopia-go"
 	"golang.org/x/exp/slog"
 	"log"

@@ -1,4 +1,4 @@
-module andromeda.nu/loopia-ipv6-updater
+module github.com/johanatandromeda/loopia-dns-updater
 
 go 1.20
 
