@@ -4,6 +4,10 @@ This is a small utility for updating the Loopia DNS records through
 the Loopia API. It is capable of updating IPv4 A records and IPv6
 AAAA records.
 
+I'm using the tool myself and I have tested it, but please, make a backup of your
+domain before running this utility. Also run a dry run first to check
+that is behaves as expected.
+
 ## Design decisions
 
 1. Must work with lots of hosts/records behind SLAAC
