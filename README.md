@@ -6,7 +6,7 @@ AAAA records.
 
 I'm using the tool myself and I have tested it, but please, make a backup of your
 domain before running this utility. Also run a dry run first to check
-that is behaves as expected.
+that it behaves as expected.
 
 ## Design decisions
 
