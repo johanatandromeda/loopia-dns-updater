@@ -96,5 +96,5 @@ Configuration items:
 | domains.interfaces.match6        | List of FQDN that should be assigned the IPv6 of the interface                                          |
 | domains.interfaces.matchUnknown4 | Update A records that are not listed in any {this}.interfaces.match4 with the IPv4 of this interface    |
 | domains.interfaces.matchUnknown6 | Update AAAA records that are not listed in any {this}.interfaces.match6 with the IPv6 of this interface |
-| loopia.username                  | Loopia API user                                                                                         |
+| loopia.username                  | Loopia API user. The user will call GetSubdomains, GetZoneRecords and UpdateZoneRecord                  |
 | loopia.password                  | Loopia API password                                                                                     |
