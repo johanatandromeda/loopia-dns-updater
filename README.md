@@ -12,7 +12,7 @@ that it behaves as expected.
 
 1. Must work with lots of hosts/records behind SLAAC
 2. Rely on the IP of the interface rather than use an
-   external service to finds the IP
+   external service to find the IP
 3. Auto discover of records in need to be updated
    (idea from one of my brothers)
 4. Should work with both IPv4 and IPv6.
