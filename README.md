@@ -18,7 +18,7 @@ that it behaves as expected.
 4. Should work with both IPv4 and IPv6.
 5. The use case is home use and small office use with a single FW/Router.
 6. No config or Loopia credicals on every host with IPv6 services
-7. Should be a small stand-alone binary.
+7. Should be a small stand-alone binary
 
 ## Supported operating systems
 
