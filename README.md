@@ -25,18 +25,25 @@ that it behaves as expected.
 The build script builds for Linux, FreeBSD and OpenBSD, but it should be
 possible to compile for other operating systems and CPU architectures.
 
-## Execution flags
+## Execution
 
 The software runs as a single execution. Place it in cron or something similar
 to run periodically
 
-| Flag      | Description                                                            |
-|-----------|------------------------------------------------------------------------|
-| -c {file} | Config file location. If not set, /etc/loopia-dns-updater.yaml is used |
-| -d        | Debug output                                                           |
-| -h        | Show help                                                              |
-| -n        | Dry run                                                                |
-| -q        | Quiet. Minimal logging                                                 |
+The util will store the relevant IPs of the interfaces. If they are not updated,
+the util will not call Loopia to check whether update is needed. To force
+execution, delete the data directory.
+
+### Execution flags
+
+| Flag      | Description                                                                                                     |
+|-----------|-----------------------------------------------------------------------------------------------------------------|
+| -c {file} | Config file location. If not set, /etc/loopia-dns-updater.yaml is used                                          |
+| -d        | Debug output                                                                                                    |
+| -h        | Show help                                                                                                       |
+| -n        | Dry run                                                                                                         |
+| -q        | Quiet. Minimal logging                                                                                          |
+| -s        | Data directory. A directory where the utility store it's data. If not set, /var/lib/loopia-dns-updater is used. |
 
 ## Logging
 
