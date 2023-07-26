@@ -13,5 +13,6 @@ build() {
 
 build linux amd64
 build linux arm
+build linux arm64
 build openbsd amd64
 build freebsd amd64
