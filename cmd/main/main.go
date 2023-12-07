@@ -8,11 +8,13 @@ import (
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/config"
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/dns"
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/net"
+	os_util "github.com/johanatandromeda/loopia-dns-updater/pkg/os-util"
 	"log"
 	"log/slog"
 	"os"
 	"path"
 	"sort"
+	"strings"
 )
 
 var version = ""
@@ -64,6 +66,10 @@ func main() {
 		log.Fatal(err)
 	}
 	if changed {
+		slog.Debug(config.ExecuteOnChange)
+		if strings.TrimSpace(config.ExecuteOnChange) != "" {
+			os_util.ExecuteCmd(config.ExecuteOnChange, *dry)
+		}
 		dns.UpdateRecords(config, addresses, *dry)
 	} else {
 		slog.Info("Interfaces have not changed IP")

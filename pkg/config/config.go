@@ -21,6 +21,7 @@ type Config struct {
 		Username string `yaml:"username"`
 		Password string `yaml:"password"`
 	} `yaml:"loopia"`
+	ExecuteOnChange string `yaml:"executeOnChange"`
 }
 
 func ReadConfig(fileName string) (Config, error) {

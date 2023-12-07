@@ -98,3 +98,4 @@ Configuration items:
 | domains.interfaces.matchUnknown6 | Update AAAA records that are not listed in any {this}.interfaces.match6 with the IPv6 of this interface |
 | loopia.username                  | Loopia API user. The user will call GetSubdomains, GetZoneRecords and UpdateZoneRecord                  |
 | loopia.password                  | Loopia API password                                                                                     |
+| executeOnChange                  | Command to execute if the relevant IPs are changed                                                      |
