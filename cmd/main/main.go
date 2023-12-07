@@ -8,8 +8,8 @@ import (
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/config"
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/dns"
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/net"
-	"golang.org/x/exp/slog"
 	"log"
+	"log/slog"
 	"os"
 	"path"
 	"sort"
@@ -88,7 +88,7 @@ func checkIfChanged(addresses map[string]net.Address, dataDir string) (bool, err
 	}
 	oldIpsBytes, err := os.ReadFile(dataFile)
 	if err != nil {
-		os.Remove(dataFile)
+		_ = os.Remove(dataFile)
 		slog.Warn(fmt.Sprintf("Old interface IP file %s corrupted. Deleteing it", dataFile))
 		return true, nil
 	}
@@ -100,7 +100,7 @@ func checkIfChanged(addresses map[string]net.Address, dataDir string) (bool, err
 func writeIpState(addresses map[string]net.Address, dataDir string) {
 	newIps := calculateIpState(addresses)
 	dataFile := path.Join(dataDir, "ifstate")
-	os.WriteFile(dataFile, []byte(newIps), 0o600)
+	_ = os.WriteFile(dataFile, []byte(newIps), 0o600)
 }
 
 func calculateIpState(addresses map[string]net.Address) string {

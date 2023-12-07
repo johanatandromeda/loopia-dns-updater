@@ -28,7 +28,9 @@ func ReadConfig(fileName string) (Config, error) {
 	if err != nil {
 		return Config{}, err
 	}
-	defer f.Close()
+	defer func(f *os.File) {
+		_ = f.Close()
+	}(f)
 
 	var cfg Config
 	decoder := yaml.NewDecoder(f)

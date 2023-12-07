@@ -3,7 +3,7 @@ package net
 import (
 	"fmt"
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/config"
-	"golang.org/x/exp/slog"
+	"log/slog"
 	"net"
 	"strings"
 )

@@ -5,8 +5,8 @@ import (
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/config"
 	"github.com/johanatandromeda/loopia-dns-updater/pkg/net"
 	"github.com/jonlil/loopia-go"
-	"golang.org/x/exp/slog"
 	"log"
+	"log/slog"
 	gonet "net"
 )
 
