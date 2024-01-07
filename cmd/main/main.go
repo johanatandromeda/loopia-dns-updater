@@ -49,14 +49,14 @@ func main() {
 		programLevel.Set(slog.LevelWarn)
 	}
 
-	slog.Info("Using config file " + *configFile)
+	slog.Info("Using conf file " + *configFile)
 
-	config, err := config.ReadConfig(*configFile)
+	conf, err := config.ReadConfig(*configFile)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	addresses, err := net.GetGlobalAddresses(config)
+	addresses, err := net.GetGlobalAddresses(conf)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -66,11 +66,11 @@ func main() {
 		log.Fatal(err)
 	}
 	if changed {
-		slog.Debug(config.ExecuteOnChange)
-		if strings.TrimSpace(config.ExecuteOnChange) != "" {
-			os_util.ExecuteCmd(config.ExecuteOnChange, *dry)
+		slog.Debug(conf.ExecuteOnChange)
+		if strings.TrimSpace(conf.ExecuteOnChange) != "" {
+			os_util.ExecuteCmd(conf.ExecuteOnChange, *dry)
 		}
-		dns.UpdateRecords(config, addresses, *dry)
+		dns.UpdateRecords(conf, addresses, *dry)
 	} else {
 		slog.Info("Interfaces have not changed IP")
 	}
@@ -100,6 +100,9 @@ func checkIfChanged(addresses map[string]net.Address, dataDir string) (bool, err
 	}
 	oldIps := string(oldIpsBytes)
 	newIps := calculateIpState(addresses)
+	if oldIps != newIps {
+		slog.Info(fmt.Sprintf("IP addresses have changed:\nOld:\n%s\nNew:\n%s", oldIps, newIps))
+	}
 	return oldIps != newIps, nil
 }
 
