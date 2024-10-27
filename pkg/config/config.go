@@ -8,7 +8,8 @@ import (
 
 type Config struct {
 	Domains []struct {
-		Name       string `yaml:"name"`
+		Name       string   `yaml:"name"`
+		Ignore     []string `yaml:"ignore"`
 		Interfaces []struct {
 			IfName        string   `yaml:"ifName"`
 			MatchUnknown4 bool     `yaml:"matchUnknown4"`

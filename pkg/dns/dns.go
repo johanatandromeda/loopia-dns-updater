@@ -22,6 +22,10 @@ func UpdateRecords(conf config.Config, addresses map[string]net.Address, dry boo
 		ifByFqdn6 := make(map[string]string)
 		var matchUnknown4 gonet.Addr
 		var matchUnknown6 gonet.Addr
+		ignored := make(map[string]bool)
+		for _, ignore := range domain.Ignore {
+			ignored[ignore] = true
+		}
 		for _, iface := range domain.Interfaces {
 			if iface.MatchUnknown4 {
 				if addr, ok := addresses[iface.IfName]; ok && addr.Ipv4 != nil {
@@ -83,12 +87,16 @@ func UpdateRecords(conf config.Config, addresses map[string]net.Address, dry boo
 				slog.Debug(fmt.Sprintf("Checking whether match known IPv4 %s is set for %s (current value %s)", ifIp, subdomain, record.Value))
 				updateIfNeeded(client, ifIp.String(), record, domain.Name, subdomain, dry)
 			} else if matchUnknown4 != nil {
-				ifIp, _, err := gonet.ParseCIDR(matchUnknown4.String())
-				if err != nil {
-					log.Fatal(err)
+				if _, found := ignored[fqdn]; !found {
+					ifIp, _, err := gonet.ParseCIDR(matchUnknown4.String())
+					if err != nil {
+						log.Fatal(err)
+					}
+					slog.Debug(fmt.Sprintf("Checking whether match unknown IPv4 %s is set for %s (current value %s)", ifIp, subdomain, record.Value))
+					updateIfNeeded(client, ifIp.String(), record, domain.Name, subdomain, dry)
+				} else {
+					slog.Debug(fmt.Sprintf("Ignoring %s from match unknown4", fqdn))
 				}
-				slog.Debug(fmt.Sprintf("Checking whether match unknown IPv4 %s is set for %s (current value %s)", ifIp, subdomain, record.Value))
-				updateIfNeeded(client, ifIp.String(), record, domain.Name, subdomain, dry)
 			}
 		}
 		for subdomain, record := range aaaaByName {
@@ -105,12 +113,16 @@ func UpdateRecords(conf config.Config, addresses map[string]net.Address, dry boo
 				slog.Debug(fmt.Sprintf("Checking whether match known IPv6 %s is set for %s (current value %s)", newIp, subdomain, record.Value))
 				updateIfNeeded(client, newIp, record, domain.Name, subdomain, dry)
 			} else if matchUnknown6 != nil {
-				newIp, err := applyNet(record.Value, matchUnknown6)
-				if err != nil {
-					log.Fatal(err)
+				if _, found := ignored[fqdn]; !found {
+					newIp, err := applyNet(record.Value, matchUnknown6)
+					if err != nil {
+						log.Fatal(err)
+					}
+					slog.Debug(fmt.Sprintf("Checking whether match unknown IPv6 %s is set for %s (current value %s)", newIp, subdomain, record.Value))
+					updateIfNeeded(client, newIp, record, domain.Name, subdomain, dry)
+				} else {
+					slog.Debug(fmt.Sprintf("Ignoring %s from match unknown6", fqdn))
 				}
-				slog.Debug(fmt.Sprintf("Checking whether match unknown IPv6 %s is set for %s (current value %s)", newIp, subdomain, record.Value))
-				updateIfNeeded(client, newIp, record, domain.Name, subdomain, dry)
 			}
 		}
 	}
@@ -146,7 +158,11 @@ func updateIfNeeded(client *loopia.API, newIp string, record loopia.Record, doma
 			record.Value = newIp
 			status, err := client.UpdateZoneRecord(domain, subdomain, record)
 			if err != nil {
-				slog.Error(fmt.Sprintf("Update failed for %s of type %s due to %s", fqdn, record.Type, status.Cause))
+				if status != nil {
+					slog.Error(fmt.Sprintf("Update failed for %s of type %s due to %s", fqdn, record.Type, status.Cause))
+				} else {
+					slog.Error(fmt.Sprintf("Update failed for %s of type %s", fqdn, record.Type))
+				}
 			}
 		}
 	} else {
